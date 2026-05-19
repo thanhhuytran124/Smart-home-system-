@@ -5,7 +5,6 @@ speed_fan_value = pin10
 def set_speed(speed_input): 
     global current_fan_speed
     try: 
-        # Chuyển đổi sang số nguyên
         val = int(speed_input) 
         if val < 0: val = 0 
         if val > 100: val = 100

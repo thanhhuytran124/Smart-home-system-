@@ -6,9 +6,6 @@ from utility import *
 """Implements a HD44780 character LCD connected via PCF8574 on I2C. 
    This was tested with: https://www.wemos.cc/product/d1-mini.html""" 
 
-# The PCF8574 has a jumper selectable address: 0x20 - 0x27 
-# DEFAULT_I2C_ADDR = 0x20 
-# Defines shifts or masks for the various LCD line attached to the PCF8574 
 MASK_RS = const(0x01)
 MASK_RW = const(0x02)
 MASK_E = const(0x04)
@@ -22,30 +19,25 @@ class LcdApi:
     them to the LCD. 
     It is expected that a derived class will implement the hal_xxx functions. 
     """ 
-    # The following constant names were lifted from the avrlib lcd.h 
-    # header file, however, I changed the definitions from bit numbers 
-    # to bit masks. 
-    # 
-    # HD44780 LCD controller command set 
-    LCD_CLR = const(0x01)              # DB0: clear display 
-    LCD_HOME = const(0x02)             # DB1: return to home position 
-    LCD_ENTRY_MODE = const(0x04)       # DB2: set entry mode 
-    LCD_ENTRY_INC = const(0x02)        # --DB1: increment 
-    LCD_ENTRY_SHIFT = const(0x01)      # --DB0: shift 
-    LCD_ON_CTRL = const(0x08)          # DB3: turn lcd/cursor on 
-    LCD_ON_DISPLAY = const(0x04)       # --DB2: turn display on 
-    LCD_ON_CURSOR = const(0x02)        # --DB1: turn cursor on 
-    LCD_ON_BLINK = const(0x01)         # --DB0: blinking cursor 
-    LCD_MOVE = const(0x10)             # DB4: move cursor/display 
-    LCD_MOVE_DISP = const(0x08)        # --DB3: move display (0-> move cursor) 
-    LCD_MOVE_RIGHT = const(0x04)       # --DB2: move right (0-> left) 
-    LCD_FUNCTION = const(0x20)         # DB5: function set 
-    LCD_FUNCTION_8BIT = const(0x10)    # --DB4: set 8BIT mode (0->4BIT mode) 
-    LCD_FUNCTION_2LINES = const(0x08)  # --DB3: two lines (0->one line) 
-    LCD_FUNCTION_10DOTS = const(0x04)  # --DB2: 5x10 font (0->5x7 font) 
-    LCD_FUNCTION_RESET = const(0x30)   # See "Initializing by Instruction" section 
-    LCD_CGRAM = const(0x40)            # DB6: set CG RAM address 
-    LCD_DDRAM = const(0x80)            # DB7: set DD RAM address 
+    LCD_CLR = const(0x01)
+    LCD_HOME = const(0x02)
+    LCD_ENTRY_MODE = const(0x04)
+    LCD_ENTRY_INC = const(0x02)
+    LCD_ENTRY_SHIFT = const(0x01)
+    LCD_ON_CTRL = const(0x08)
+    LCD_ON_DISPLAY = const(0x04)
+    LCD_ON_CURSOR = const(0x02)
+    LCD_ON_BLINK = const(0x01)
+    LCD_MOVE = const(0x10)
+    LCD_MOVE_DISP = const(0x08)
+    LCD_MOVE_RIGHT = const(0x04)
+    LCD_FUNCTION = const(0x20)
+    LCD_FUNCTION_8BIT = const(0x10)
+    LCD_FUNCTION_2LINES = const(0x08)
+    LCD_FUNCTION_10DOTS = const(0x04)
+    LCD_FUNCTION_RESET = const(0x30)
+    LCD_CGRAM = const(0x40)
+    LCD_DDRAM = const(0x80)
     LCD_RS_CMD = const(0) 
     LCD_RS_DATA = const(1)
     LCD_RW_WRITE = const(0)
@@ -65,15 +57,13 @@ class LcdApi:
 
     def init_display(self):
         self.i2c.writeto(self.i2c_addr, bytearray([0])) 
-        sleep_ms(20)   # Allow LCD time to powerup 
-        # Send reset 3 times 
+        sleep_ms(20)
         self.hal_write_init_nibble(self.LCD_FUNCTION_RESET) 
-        sleep_ms(5)    # need to delay at least 4.1 msec 
-        self.hal_write_init_nibble(self.LCD_FUNCTION_RESET) 
-        sleep_ms(1) 
+        sleep_ms(5)
         self.hal_write_init_nibble(self.LCD_FUNCTION_RESET) 
         sleep_ms(1) 
-        # Put LCD into 4 bit mode 
+        self.hal_write_init_nibble(self.LCD_FUNCTION_RESET) 
+        sleep_ms(1) 
         self.hal_write_init_nibble(self.LCD_FUNCTION) 
         sleep_ms(1) 
 
@@ -148,8 +138,8 @@ class LcdApi:
         self.cursor_y = cursor_y 
         addr = cursor_x & 0x3f 
         if cursor_y & 1: 
-            addr += 0x40    # Lines 1 & 3 add 0x40 
-        if cursor_y & 2:    # Lines 2 & 3 add number of columns 
+            addr += 0x40
+        if cursor_y & 2:
             addr += self.num_columns 
         self.hal_write_command(self.LCD_DDRAM | addr)
 
@@ -159,8 +149,6 @@ class LcdApi:
         """ 
         if char == '\n': 
             if self.implied_newline: 
-                # self.implied_newline means we advanced due to a wraparound, 
-                # so if we get a newline right after that we ignore it. 
                 pass 
             else: 
                 self.cursor_x = self.num_columns 
@@ -231,7 +219,6 @@ class LCD1602(LcdApi):
         self.i2c_addr = i2c_addr 
         super().__init__(2, 16)
          
-        # Grove port: GND VCC SCL SDA
         scl_pin = machine.Pin(pin19.pin)
         sda_pin = machine.Pin(pin20.pin)
         self.i2c = machine.SoftI2C(scl=scl_pin, sda=sda_pin)
@@ -268,7 +255,6 @@ class LCD1602(LcdApi):
         self.i2c.writeto(self.i2c_addr, bytearray([byte | MASK_E])) 
         self.i2c.writeto(self.i2c_addr, bytearray([byte])) 
         if cmd <= 3: 
-            # The home and clear commands require a worst case delay of 4.1 msec 
             sleep_ms(5) 
     
     def hal_write_data(self, data): 

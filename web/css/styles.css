@@ -1,4 +1,4 @@
-/* ==================== CẤU HÌNH CHUNG ==================== */
+
 body {
   margin          : 0;
   font-family     : "Poppins", Arial, sans-serif;
@@ -7,7 +7,6 @@ body {
   background-color: #eef2f7;
 }
 
-/* Sidebar (Thanh bên trái) */
 .sidebar {
   width           : 260px;
   background-color: #2294F2;
@@ -58,14 +57,12 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
-/* Nội dung chính */
 .main-content {
   flex      : 1;
   padding   : 40px 60px;
   overflow-y: auto;
 }
 
-/* ==================== TRANG CHỦ (GAUGES) ==================== */
 .gauges-container {
   display        : flex;
   flex-wrap      : wrap;
@@ -74,7 +71,6 @@ body {
   margin-top     : 20px;
 }
 
-/* Thẻ chứa đồng hồ - Ép kích thước bằng nhau */
 .gauge-card {
   background   : white;
   border-radius: 16px;
@@ -82,7 +78,7 @@ body {
   padding      : 25px;
   text-align   : center;
   width        : 300px;
-  min-height   : 340px; /* Chiều cao cố định để các card thẳng hàng */
+  min-height   : 340px; 
   display      : flex;
   flex-direction: column;
   justify-content: space-between;
@@ -100,14 +96,12 @@ body {
   margin-bottom: 5px;
 }
 
-/* Các vòng tròn đồng hồ - Ép kích thước vẽ đồng nhất */
 #gauge_temp, #gauge_humi, #gauge_light {
     width: 100%;    
     height: 200px;  
     margin: 0 auto;
 }
 
-/* ==================== THIẾT BỊ (RELAY) ==================== */
 .device-list {
   display        : flex;
   flex-wrap      : wrap;
@@ -158,7 +152,6 @@ body {
   box-shadow   : 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
-/* ==================== CÀI ĐẶT ==================== */
 .settings-section {
   display: flex;
   justify-content: center;
@@ -207,7 +200,6 @@ body {
   font-weight: 600;
 }
 
-/* ==================== DIALOGS ==================== */
 .dialog-overlay {
   position: fixed;
   inset: 0;
@@ -232,7 +224,6 @@ body {
   to { transform: scale(1); opacity: 1; }
 }
 
-/* ==================== RESPONSIVE (ĐIỆN THOẠI) ==================== */
 @media (max-width: 768px) {
   .sidebar { width: 80px; }
   .sidebar span { display: none; }
@@ -241,22 +232,136 @@ body {
   .gauge-card { width: 100%; min-height: 300px; }
 }
 
-/* Hiệu ứng quạt quay */
-@keyframes spin {
+@keyframes spin-fan {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
 
 .fan-on {
-    animation: spin 1s linear infinite;
+    animation: spin-fan 1s linear infinite;
     color: #2294F2 !important;
 }
 
-.fan-card input[type="range"] {
-    width: 80%;
+#fan-slider {
+    width: 85%;
     cursor: pointer;
 }
 
-.fan-controls {
-    margin: 15px 0;
+.device-card.rgb-card select {
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.device-card.rgb-card input[type="color"] {
+    border-radius: 8px;
+}
+
+.door-badge {
+    display      : inline-block;
+    padding      : 7px 22px;
+    border-radius: 20px;
+    font-weight  : bold;
+    font-size    : 14px;
+    letter-spacing: 0.5px;
+    transition   : background 0.4s, color 0.4s;
+}
+.door-closed {
+    background: #f0f0f0;
+    color     : #636e72;
+}
+.door-open {
+    background: #e8f5e9;
+    color     : #27ae60;
+}
+
+.auth-body {
+    display         : flex;
+    justify-content : center;
+    align-items     : center;
+    height          : 100vh;
+    background      : linear-gradient(135deg, #2294F2 0%, #1b7fe0 100%);
+}
+
+.auth-card {
+    background    : #fff;
+    border-radius : 20px;
+    padding       : 40px 35px;
+    box-shadow    : 0 20px 60px rgba(0, 0, 0, 0.2);
+    width         : 400px;
+    max-width     : 90%;
+}
+
+.auth-logo {
+    text-align    : center;
+    margin-bottom : 25px;
+}
+.auth-logo img {
+    width : 70px;
+    height: 70px;
+}
+.auth-logo h1 {
+    margin    : 10px 0 0;
+    color     : #2294F2;
+    font-size : 24px;
+}
+
+.auth-form h2 {
+    text-align    : center;
+    color         : #333;
+    margin-bottom : 25px;
+}
+
+.auth-switch {
+    text-align : center;
+    margin-top : 18px;
+    color      : #777;
+    font-size  : 14px;
+}
+.auth-switch a {
+    color           : #2294F2;
+    text-decoration : none;
+    font-weight     : 600;
+}
+.auth-switch a:hover { text-decoration: underline; }
+
+.auth-message {
+    margin-top    : 15px;
+    text-align    : center;
+    padding       : 10px;
+    border-radius : 8px;
+    font-size     : 14px;
+    min-height    : 20px;
+    transition    : all 0.3s;
+}
+.auth-message.error   { background: #ffebee; color: #c62828; }
+.auth-message.success { background: #e8f5e9; color: #2e7d32; }
+
+.account-info {
+    background    : #f8f9fa;
+    border-radius : 12px;
+    padding       : 18px;
+    margin        : 20px 0;
+}
+.account-row {
+    display       : flex;
+    align-items   : center;
+    gap           : 12px;
+    padding       : 10px 0;
+    border-bottom : 1px solid #eee;
+}
+.account-row:last-child { border-bottom: none; }
+.account-row i {
+    color    : #2294F2;
+    width    : 20px;
+    text-align: center;
+}
+.account-row .label {
+    color      : #888;
+    font-size  : 14px;
+    min-width  : 120px;
+}
+.account-row .value {
+    color       : #333;
+    font-weight : 600;
+    font-family : "Courier New", monospace;
 }

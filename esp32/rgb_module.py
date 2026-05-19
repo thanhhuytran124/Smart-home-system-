@@ -1,9 +1,7 @@
-# rgb_module.py
 from machine import Pin 
 import neopixel 
 from yolobit import * 
 
-# Khởi tạo 4 mắt LED tại chân P0
 pixels = neopixel.NeoPixel(Pin(pin0.pin), 4)
 
 def hex_to_rgb(hex_str): 

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 220" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="seqArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+    <!-- Gradient removed -->
+  </defs>
+
+  <text x="500" y="30" font-size="20" font-weight="700" text-anchor="middle" fill="#222">YoloBit Boot Sequence</text>
+
+  <!-- 6 steps -->
+  <g>
+    <circle cx="80"  cy="120" r="42" fill="#6E5BD3"/>
+    <text x="80"  y="115" font-size="14" font-weight="700" text-anchor="middle" fill="white">1</text>
+    <text x="80"  y="135" font-size="11" text-anchor="middle" fill="white">Power-up</text>
+    <text x="80"  y="185" font-size="11" text-anchor="middle" fill="#333">boot.py → main.py</text>
+
+    <circle cx="230" cy="120" r="42" fill="#6E5BD3"/>
+    <text x="230" y="115" font-size="14" font-weight="700" text-anchor="middle" fill="white">2</text>
+    <text x="230" y="135" font-size="11" text-anchor="middle" fill="white">Init HW</text>
+    <text x="230" y="185" font-size="11" text-anchor="middle" fill="#333">LCD · DHT20 · pin2</text>
+
+    <circle cx="380" cy="120" r="42" fill="#6E5BD3"/>
+    <text x="380" y="115" font-size="14" font-weight="700" text-anchor="middle" fill="white">3</text>
+    <text x="380" y="135" font-size="11" text-anchor="middle" fill="white">Wi-Fi</text>
+    <text x="380" y="185" font-size="11" text-anchor="middle" fill="#333">connect_wifi()</text>
+
+    <circle cx="530" cy="120" r="42" fill="#6E5BD3"/>
+    <text x="530" y="115" font-size="14" font-weight="700" text-anchor="middle" fill="white">4</text>
+    <text x="530" y="135" font-size="11" text-anchor="middle" fill="white">NTP sync</text>
+    <text x="530" y="185" font-size="11" text-anchor="middle" fill="#333">ntptime.settime()</text>
+
+    <circle cx="680" cy="120" r="42" fill="#6E5BD3"/>
+    <text x="680" y="115" font-size="14" font-weight="700" text-anchor="middle" fill="white">5</text>
+    <text x="680" y="135" font-size="11" text-anchor="middle" fill="white">MQTT</text>
+    <text x="680" y="185" font-size="11" text-anchor="middle" fill="#333">setup_adafruit()</text>
+
+    <circle cx="830" cy="120" r="42" fill="#6E5BD3"/>
+    <text x="830" y="115" font-size="14" font-weight="700" text-anchor="middle" fill="white">6</text>
+    <text x="830" y="135" font-size="11" text-anchor="middle" fill="white">Main loop</text>
+    <text x="830" y="185" font-size="11" text-anchor="middle" fill="#333">while True</text>
+  </g>
+
+  <!-- arrows -->
+  <line x1="124" y1="120" x2="186" y2="120" stroke="#555" stroke-width="2.5" marker-end="url(#seqArr)"/>
+  <line x1="274" y1="120" x2="336" y2="120" stroke="#555" stroke-width="2.5" marker-end="url(#seqArr)"/>
+  <line x1="424" y1="120" x2="486" y2="120" stroke="#555" stroke-width="2.5" marker-end="url(#seqArr)"/>
+  <line x1="574" y1="120" x2="636" y2="120" stroke="#555" stroke-width="2.5" marker-end="url(#seqArr)"/>
+  <line x1="724" y1="120" x2="786" y2="120" stroke="#555" stroke-width="2.5" marker-end="url(#seqArr)"/>
+</svg>

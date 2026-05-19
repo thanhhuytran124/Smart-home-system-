@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="mArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#444"/>
+    </marker>
+  </defs>
+
+  <text x="450" y="32" font-size="20" font-weight="700" text-anchor="middle" fill="#222">Firmware Module Dependency Graph</text>
+
+  <!-- main.py central -->
+  <rect x="370" y="240" width="160" height="80" rx="10" fill="#fff3cd" stroke="#856404" stroke-width="2.5"/>
+  <text x="450" y="270" font-size="16" font-weight="700" text-anchor="middle" fill="#856404">main.py</text>
+  <text x="450" y="295" font-size="12" text-anchor="middle" fill="#666">orchestrator</text>
+  <text x="450" y="312" font-size="11" text-anchor="middle" fill="#666">infinite loop @ 0.1s</text>
+
+  <!-- network_module -->
+  <rect x="60" y="80" width="180" height="70" rx="10" fill="#d1ecf1" stroke="#0c5460" stroke-width="2"/>
+  <text x="150" y="108" font-size="14" font-weight="700" text-anchor="middle" fill="#0c5460">network_module.py</text>
+  <text x="150" y="128" font-size="11" text-anchor="middle" fill="#666">connect_wifi()</text>
+  <text x="150" y="143" font-size="11" text-anchor="middle" fill="#666">sync_time()</text>
+
+  <!-- coreiot_module -->
+  <rect x="660" y="80" width="180" height="70" rx="10" fill="#d4edda" stroke="#155724" stroke-width="2"/>
+  <text x="750" y="108" font-size="14" font-weight="700" text-anchor="middle" fill="#155724">coreiot_module.py</text>
+  <text x="750" y="128" font-size="11" text-anchor="middle" fill="#666">setup_adafruit()</text>
+  <text x="750" y="143" font-size="11" text-anchor="middle" fill="#666">publish_sensor_data()</text>
+
+  <!-- mqtt -->
+  <rect x="660" y="240" width="180" height="80" rx="10" fill="#f8d7da" stroke="#721c24" stroke-width="2"/>
+  <text x="750" y="268" font-size="14" font-weight="700" text-anchor="middle" fill="#721c24">mqtt.py</text>
+  <text x="750" y="288" font-size="11" text-anchor="middle" fill="#666">class MQTT (singleton)</text>
+  <text x="750" y="305" font-size="11" text-anchor="middle" fill="#666">publish · subscribe</text>
+
+  <!-- fan_module -->
+  <rect x="60" y="240" width="180" height="80" rx="10" fill="#e2e3e5" stroke="#383d41" stroke-width="2"/>
+  <text x="150" y="268" font-size="14" font-weight="700" text-anchor="middle" fill="#383d41">fan_module.py</text>
+  <text x="150" y="288" font-size="11" text-anchor="middle" fill="#666">set_speed()</text>
+  <text x="150" y="305" font-size="11" text-anchor="middle" fill="#666">fan_callback()</text>
+
+  <!-- rgb_module -->
+  <rect x="370" y="420" width="160" height="80" rx="10" fill="#e7d4f5" stroke="#5e2b8a" stroke-width="2"/>
+  <text x="450" y="448" font-size="14" font-weight="700" text-anchor="middle" fill="#5e2b8a">rgb_module.py</text>
+  <text x="450" y="468" font-size="11" text-anchor="middle" fill="#666">hex_to_rgb()</text>
+  <text x="450" y="485" font-size="11" text-anchor="middle" fill="#666">led_callback()</text>
+
+  <!-- config -->
+  <rect x="60" y="420" width="180" height="80" rx="10" fill="#fce4ec" stroke="#880e4f" stroke-width="2"/>
+  <text x="150" y="448" font-size="14" font-weight="700" text-anchor="middle" fill="#880e4f">config.py</text>
+  <text x="150" y="468" font-size="11" text-anchor="middle" fill="#666">WIFI_*, AIO_*</text>
+  <text x="150" y="485" font-size="11" text-anchor="middle" fill="#666">FEED_* topics</text>
+
+  <!-- HW drivers -->
+  <rect x="660" y="420" width="180" height="80" rx="10" fill="#fff" stroke="#444" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="750" y="448" font-size="13" font-weight="700" text-anchor="middle" fill="#444">HW drivers</text>
+  <text x="750" y="468" font-size="11" text-anchor="middle" fill="#666">aiot_lcd1602.py</text>
+  <text x="750" y="485" font-size="11" text-anchor="middle" fill="#666">aiot_dht20.py</text>
+
+  <!-- Edges from main.py -->
+  <line x1="370" y1="270" x2="240" y2="115" stroke="#444" stroke-width="2" marker-end="url(#mArr)"/>
+  <text x="290" y="195" font-size="11" fill="#444">imports</text>
+
+  <line x1="530" y1="270" x2="660" y2="115" stroke="#444" stroke-width="2" marker-end="url(#mArr)"/>
+  <text x="615" y="195" font-size="11" fill="#444">imports</text>
+
+  <line x1="530" y1="280" x2="660" y2="280" stroke="#444" stroke-width="2" marker-end="url(#mArr)"/>
+  <text x="595" y="270" font-size="11" fill="#444">from mqtt import mqtt</text>
+
+  <line x1="370" y1="280" x2="240" y2="280" stroke="#444" stroke-width="2" marker-end="url(#mArr)"/>
+  <text x="280" y="270" font-size="11" fill="#444">imports</text>
+
+  <line x1="450" y1="320" x2="450" y2="420" stroke="#444" stroke-width="2" marker-end="url(#mArr)"/>
+  <text x="455" y="375" font-size="11" fill="#444">imports (optional)</text>
+
+  <!-- coreiot → mqtt -->
+  <line x1="750" y1="150" x2="750" y2="240" stroke="#444" stroke-width="2" marker-end="url(#mArr)"/>
+  <text x="755" y="200" font-size="11" fill="#444">uses</text>
+
+  <!-- coreiot → config -->
+  <line x1="660" y1="115" x2="240" y2="450" stroke="#444" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#mArr)"/>
+  <text x="385" y="320" font-size="11" fill="#444" transform="rotate(-30 385 320)">reads credentials</text>
+
+  <!-- fan → mqtt callback registration -->
+  <line x1="240" y1="305" x2="660" y2="305" stroke="#888" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="450" y="335" font-size="10" text-anchor="middle" fill="#888">fan_callback registered as MQTT subscriber</text>
+
+  <!-- rgb → mqtt callback -->
+  <line x1="450" y1="420" x2="750" y2="320" stroke="#888" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="640" y="385" font-size="10" text-anchor="middle" fill="#888">led_callback (planned)</text>
+
+  <!-- network → config -->
+  <line x1="150" y1="150" x2="150" y2="420" stroke="#444" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#mArr)"/>
+  <text x="100" y="290" font-size="11" fill="#444">WIFI_SSID/PASS</text>
+
+  <!-- Legend -->
+  <text x="60" y="540" font-size="11" fill="#666">Solid arrow = import / function call · Dashed arrow = configuration read or callback registration</text>
+</svg>

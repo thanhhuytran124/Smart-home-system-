@@ -1,32 +1,50 @@
 <!DOCTYPE HTML>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>YOLO Home Dashboard</title>
-  <link rel="stylesheet" href="styles.css">
+
+  <link rel="stylesheet" href="css/styles.css">
+
   <script src="https://cdn.jsdelivr.net/npm/raphael@2.3.0/raphael.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/justgage@1.3.5/justgage.min.js"></script>
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
+
+  <script>
+    if (!localStorage.getItem('jwt_token')) {
+      window.location.href = '/login.html';
+    }
+  </script>
 
   <div class="sidebar">
     <div class="logo-container">
-      <img class="logo-img" src="logo.png" alt="Logo">
+      <img class="logo-img" src="assets/logo.png" alt="Logo">
     </div>
+
     <div class="nav-item active" onclick="showSection('home', event)">🏠 <span>Trang chủ</span></div>
     <div class="nav-item" onclick="showSection('device', event)">⚡ <span>Thiết bị</span></div>
     <div class="nav-item" onclick="showSection('settings', event)">⚙️ <span>Cài đặt</span></div>
   </div>
 
   <div class="main-content">
-    <!-- TRANG CHỦ -->
+
     <div id="home" class="section fade-in">
       <header>
         <h1>Bảng điều khiển YOLO Home</h1>
-        <div id="digital-clock" style="font-size: 26px; font-weight: bold; color: #2294F2; margin: 15px 0;">
-          --:--:-- | --/--/----
+        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:center; margin: 15px 0;">
+          <div id="digital-clock" style="font-size: 26px; font-weight: bold; color: #2294F2;">
+            --:--:-- | --/--/----
+          </div>
+          <div style="display:flex; align-items:center; gap:6px; font-size:13px; color:#888; background:#f8f9fa; padding:4px 12px; border-radius:20px;">
+            <span id="mqtt-dot" style="width:9px; height:9px; border-radius:50%; background:#ccc; display:inline-block; transition:background 0.4s;"></span>
+            <span id="mqtt-label">Đang kết nối...</span>
+          </div>
         </div>
         <p>Giám sát môi trường & Điều khiển từ xa qua Adafruit Cloud</p>
       </header>
@@ -36,10 +54,12 @@
           <h2>🌡️ Nhiệt độ (°C)</h2>
           <div id="gauge_temp"></div>
         </div>
+
         <div class="gauge-card">
           <h2>💧 Độ ẩm (%)</h2>
           <div id="gauge_humi"></div>
         </div>
+
         <div class="gauge-card">
           <h2>☀️ Ánh sáng (%)</h2>
           <div id="gauge_light"></div>
@@ -47,86 +67,112 @@
       </div>
     </div>
 
-    <!-- THIẾT BỊ -->
     <div id="device" class="section" style="display:none;">
       <header>
-        <h1>Điều khiển Relay</h1>
-        <p>Bật/tắt thiết bị thông qua Adafruit Feed 'relay'</p>
+        <h1>Điều khiển thiết bị</h1>
+        <p>Bật/tắt và điều chỉnh công suất thiết bị thời gian thực</p>
       </header>
-      <div class="device-list" id="relayContainer"></div>
-      <div class="device-card fan-card">
+
+      <div class="device-list">
+        <div class="device-card fan-card">
           <i id="fan-icon" class="fa-solid fa-fan device-icon"></i>
           <h3>Quạt Mini</h3>
           <div class="fan-controls" style="margin: 15px 0;">
-              <p>Tốc độ: <span id="fan-speed-text" style="font-weight: bold; color: #2294F2;">0</span>%</p>
-              <input type="range" id="fan-slider" min="0" max="100" value="0" 
-                     oninput="updateFanLabel(this.value)" 
-                     onchange="sendFanSpeed(this.value)"
-                     style="width: 85%; cursor: pointer;">
+            <p>Tốc độ: <span id="fan-speed-text" style="font-weight:bold; color:#2294F2">0</span>%</p>
+            <input type="range" id="fan-slider" min="0" max="100" value="0" oninput="updateFanLabel(this.value)" onchange="sendFanSpeed(this.value)">
           </div>
-          <div style="display: flex; justify-content: space-around;">
-              <button class="toggle-btn" onclick="sendFanSpeed(100)" style="width: 45%; font-size: 12px; padding: 8px;">MAX</button>
-              <button class="toggle-btn" onclick="sendFanSpeed(0)" style="width: 45%; font-size: 12px; padding: 8px; background: #ff7675; color: white;">OFF</button>
+          <div style="display: flex; justify-content: space-around; width: 100%;">
+            <button class="toggle-btn" onclick="sendFanSpeed(100)" style="width: 45%;">MAX</button>
+            <button class="toggle-btn" onclick="sendFanSpeed(0)" style="background:#ff7675; color:white; width: 45%;">OFF</button>
           </div>
-      </div>
+        </div>
 
-      <!-- Khối điều khiển Đèn RGB (Dán vào đây) -->
-      <div class="device-card rgb-card" style="min-height: 400px;">
+        <div class="device-card door-card">
+          <i id="door-icon" class="fa-solid fa-door-closed device-icon" style="color:#636e72;"></i>
+          <h3>Cửa ra vào</h3>
+          <div style="margin: 18px 0; text-align: center;">
+            <span id="door-status-badge" class="door-badge door-closed">ĐÃ ĐÓNG</span>
+          </div>
+          <div style="display: flex; justify-content: space-around; width: 100%; margin-top: 12px;">
+            <button class="toggle-btn" onclick="sendDoorCommand('open')" style="width: 45%; background: #27ae60; color: white;">
+              <i class="fa-solid fa-door-open"></i> MỞ
+            </button>
+            <button class="toggle-btn" onclick="sendDoorCommand('close')" style="width: 45%; background: #e74c3c; color: white;">
+              <i class="fa-solid fa-door-closed"></i> ĐÓNG
+            </button>
+          </div>
+          <p style="font-size:12px; color:#aaa; text-align:center; margin-top:10px;">
+            <i class="fa-solid fa-wifi"></i> Điều khiển qua Adafruit (Servo P3)
+          </p>
+        </div>
+
+        <div class="device-card rgb-card" style="min-height: 400px;">
           <i id="rgb-icon" class="fa-solid fa-lightbulb device-icon"></i>
-          <h3>Hệ thống LED RGB</h3>
-          
-          <div class="led-selector" style="margin-bottom: 10px;">
-              <p style="font-size: 14px; margin-bottom: 5px;">Chọn vị trí đèn:</p>
-              <select id="led-index" style="padding: 8px; border-radius: 8px; width: 85%; border: 1px solid #ddd;">
-                  <option value="ALL">Tất cả (4 LED)</option>
-                  <option value="0">Đèn số 1</option>
-                  <option value="1">Đèn số 2</option>
-                  <option value="2">Đèn số 3</option>
-                  <option value="3">Đèn số 4</option>
-              </select>
+          <h3>Đèn RGB</h3>
+          <div style="margin-bottom: 10px;">
+            <p style="font-size:14px">Vị trí đèn:</p>
+            <select id="led-index" style="width:85%; padding:8px; border-radius:8px; border:1px solid #ddd;">
+              <option value="ALL">Tất cả (4 LED)</option>
+              <option value="0">Đèn 1</option>
+              <option value="1">Đèn 2</option>
+              <option value="2">Đèn 3</option>
+              <option value="3">Đèn 4</option>
+            </select>
           </div>
-
-          <div class="rgb-controls" style="margin-bottom: 15px;">
-              <p style="font-size: 14px; margin-bottom: 5px;">Chọn màu sắc:</p>
-              <input type="color" id="rgb-picker" value="#00ff00" 
-                     style="width: 85%; height: 40px; cursor: pointer; border: none; border-radius: 5px; background: none;">
+          <div style="margin-bottom:20px;">
+            <p style="font-size:14px">Màu sắc:</p>
+            <input type="color" id="rgb-picker" value="#00ff00" style="width:85%; height:45px; border:none; cursor:pointer; background:none;">
           </div>
-
-          <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
-              <button class="toggle-btn" onclick="applyLEDColor()" style="width: 45%; font-size: 12px; padding: 10px;">ÁP DỤNG</button>
-              <button class="toggle-btn" onclick="sendLEDRaw('ALARM')" style="width: 45%; font-size: 12px; background: #d63031; color: white; padding: 10px;">BÁO ĐỘNG</button>
-              <button class="toggle-btn" onclick="sendLEDRaw('#000000')" style="width: 93%; font-size: 12px; background: #636e72; color: white; padding: 10px;">TẮT TOÀN BỘ</button>
+          <div style="display:flex; flex-direction: column; gap:10px; align-items: center; width: 100%;">
+            <button class="toggle-btn" onclick="applyLEDColor()" style="width:85%; background: #2294F2; color: white;">ÁP DỤNG</button>
+            <button class="toggle-btn" onclick="sendLEDRaw('#000000')" style="width:85%; background:#636e72; color:white">TẮT ĐÈN</button>
           </div>
+        </div>
       </div>
-      <button class="add-relay-btn" onclick="openAddRelayDialog()"><i class="fa-solid fa-plus"></i></button>
+
+      <div id="relayContainer" class="device-list" style="margin-top: 20px;"></div>
+
+      <button class="add-relay-btn" onclick="openAddRelayDialog()">
+        <i class="fa-solid fa-plus"></i>
+      </button>
     </div>
 
-    <!-- CÀI ĐẶT -->
     <div id="settings" class="section settings-section" style="display:none;">
       <div class="settings-card">
-        <h2><i class="fa-solid fa-cloud"></i> Cấu hình Adafruit IO</h2>
-        <p>Nhập thông tin tài khoản Cloud của bạn để kết nối.</p>
-        <form id="settingsForm">
-          <div class="input-group">
+        <h2><i class="fa-solid fa-circle-user"></i> Thông tin tài khoản</h2>
+        <p>Chi tiết tài khoản đang đăng nhập</p>
+
+        <div class="account-info">
+          <div class="account-row">
             <i class="fa-solid fa-user"></i>
-            <input type="text" id="aio_user" placeholder="Adafruit Username" required>
+            <span class="label">Tài khoản:</span>
+            <span class="value" id="info_username">—</span>
           </div>
-          <div class="input-group">
+          <div class="account-row">
+            <i class="fa-solid fa-cloud"></i>
+            <span class="label">Adafruit User:</span>
+            <span class="value" id="info_aio_user">—</span>
+          </div>
+          <div class="account-row">
             <i class="fa-solid fa-key"></i>
-            <input type="password" id="aio_key" placeholder="Adafruit Active Key" required>
+            <span class="label">Adafruit Key:</span>
+            <span class="value" id="info_aio_key">—</span>
           </div>
-          <button type="submit" class="btn-save"><i class="fa-solid fa-floppy-disk"></i> Lưu cấu hình</button>
-        </form>
+        </div>
+
+        <button type="button" class="btn-save" onclick="logout()" style="background:#e74c3c;">
+          <i class="fa-solid fa-right-from-bracket"></i> ĐĂNG XUẤT
+        </button>
       </div>
     </div>
+
   </div>
 
-  <!-- Dialogs (Giữ nguyên phần add/delete relay của bạn) -->
   <div id="addRelayDialog" class="dialog-overlay" style="display:none;">
     <div class="dialog fade-in">
       <h3>Thêm relay mới</h3>
-      <div class="input-field"><input type="text" id="relayName" placeholder="Tên relay"></div>
-      <div class="input-field"><input type="number" id="relayGPIO" placeholder="Chân GPIO"></div>
+      <div class="input-field"><input type="text" id="relayName" placeholder="Tên thiết bị (VD: Đèn phòng ngủ)"></div>
+      <div class="input-field"><input type="number" id="relayGPIO" placeholder="Chân GPIO (VD: 15)"></div>
       <div class="dialog-buttons">
         <button class="confirm" onclick="saveRelay()">Lưu</button>
         <button class="cancel" onclick="closeAddRelayDialog()">Hủy</button>
@@ -134,6 +180,7 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="js/dashboard.js?v=3"></script>
 </body>
+
 </html>

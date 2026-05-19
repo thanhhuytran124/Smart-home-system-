@@ -4,10 +4,9 @@ from aiot_dht20 import DHT20
 import time
 import network_module
 import coreiot_module
-from mqtt import mqtt # Import để gọi check_msg
+from mqtt import mqtt
 import fan_module
 
-# Khởi tạo phần cứng
 lcd = LCD1602()
 dht = DHT20()
 light_sensor = pin2
@@ -15,13 +14,12 @@ light_sensor = pin2
 lcd.clear()
 print("Khoi dong YOLO Home...")
 
-# Kết nối mạng
 network_module.connect_wifi(lcd)
 network_module.sync_time(lcd)
 coreiot_module.setup_adafruit(lcd) 
 
 last_send_time = 0
-send_interval = 5 # Gửi lên Cloud mỗi 5 giây 
+send_interval = 5
 
 while True:
     try:
@@ -37,7 +35,7 @@ while True:
         lcd.move_to(0, 1); lcd.putstr(line2)
 
         current_time = time.time()
-        if current_time - last_send_time >= 5: # Đổi thành 10 giây
+        if current_time - last_send_time >= 5:
             coreiot_module.publish_sensor_data(temp, humi, light_percent)
             last_send_time = current_time 
             print("--- Da cap nhat Cloud ---")

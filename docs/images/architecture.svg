@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 720" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/>
+    </marker>
+    <!-- Gradients removed in favor of solid colors for broader renderer support -->
+  </defs>
+
+  <!-- Title -->
+  <text x="450" y="35" font-size="22" font-weight="700" text-anchor="middle" fill="#222">YOLO Home — 3-Tier System Architecture</text>
+
+  <!-- ====== APPLICATION LAYER ====== -->
+  <rect x="40" y="70" width="820" height="140" rx="14" fill="#6E5BD3"/>
+  <text x="60" y="98" font-size="14" font-weight="700" fill="white">APPLICATION LAYER</text>
+
+  <rect x="120" y="115" width="280" height="80" rx="10" fill="white"/>
+  <text x="260" y="145" font-size="16" font-weight="700" text-anchor="middle" fill="#333">Web Dashboard</text>
+  <text x="260" y="168" font-size="12" text-anchor="middle" fill="#666">HTML / CSS / JavaScript</text>
+  <text x="260" y="184" font-size="12" text-anchor="middle" fill="#666">JustGage gauges, fan slider, RGB picker</text>
+
+  <rect x="500" y="115" width="280" height="80" rx="10" fill="white"/>
+  <text x="640" y="145" font-size="16" font-weight="700" text-anchor="middle" fill="#333">Face Recognizer</text>
+  <text x="640" y="168" font-size="12" text-anchor="middle" fill="#666">Python + OpenCV (standalone)</text>
+  <text x="640" y="184" font-size="12" text-anchor="middle" fill="#666">Haar Cascade + LBPH</text>
+
+  <!-- Arrow App ↔ Cloud -->
+  <line x1="260" y1="220" x2="260" y2="280" stroke="#333" stroke-width="2" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+  <text x="278" y="255" font-size="12" fill="#222">HTTPS REST</text>
+
+  <!-- ====== CLOUD LAYER ====== -->
+  <rect x="40" y="290" width="820" height="120" rx="14" fill="#00ACC1"/>
+  <text x="60" y="318" font-size="14" font-weight="700" fill="white">CLOUD LAYER — Adafruit IO</text>
+
+  <rect x="120" y="335" width="280" height="60" rx="10" fill="white"/>
+  <text x="260" y="360" font-size="15" font-weight="700" text-anchor="middle" fill="#333">MQTT Broker</text>
+  <text x="260" y="380" font-size="12" text-anchor="middle" fill="#666">Port 1883 (publish / subscribe)</text>
+
+  <rect x="500" y="335" width="280" height="60" rx="10" fill="white"/>
+  <text x="640" y="360" font-size="15" font-weight="700" text-anchor="middle" fill="#333">REST API v2</text>
+  <text x="640" y="380" font-size="12" text-anchor="middle" fill="#666">HTTPS — GET /data/last, POST /data</text>
+
+  <!-- Feeds box -->
+  <rect x="120" y="225" width="660" height="42" rx="8" fill="#fff" stroke="#0097A7" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <text x="450" y="252" font-size="13" font-weight="600" text-anchor="middle" fill="#0097A7">Feeds:  temperature · humidity · light · fan-speed · led-rgb</text>
+
+  <!-- Arrow Cloud ↔ Device -->
+  <line x1="640" y1="420" x2="640" y2="480" stroke="#333" stroke-width="2" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+  <text x="658" y="455" font-size="12" fill="#222">MQTT (port 1883)</text>
+
+  <!-- ====== DEVICE LAYER ====== -->
+  <rect x="40" y="490" width="820" height="210" rx="14" fill="#3DB970"/>
+  <text x="60" y="518" font-size="14" font-weight="700" fill="white">DEVICE LAYER — YoloBit (ESP32 + MicroPython)</text>
+
+  <!-- YoloBit center -->
+  <rect x="350" y="540" width="200" height="80" rx="10" fill="#fff"/>
+  <text x="450" y="568" font-size="16" font-weight="700" text-anchor="middle" fill="#333">YoloBit (ESP32)</text>
+  <text x="450" y="588" font-size="12" text-anchor="middle" fill="#666">MicroPython firmware</text>
+  <text x="450" y="606" font-size="12" text-anchor="middle" fill="#666">Wi-Fi STA + MQTT client</text>
+
+  <!-- Sensors (left side) -->
+  <rect x="70" y="540" width="120" height="50" rx="8" fill="#fff"/>
+  <text x="130" y="565" font-size="13" font-weight="700" text-anchor="middle" fill="#333">DHT20</text>
+  <text x="130" y="582" font-size="11" text-anchor="middle" fill="#666">Temp / Humi (I²C)</text>
+
+  <rect x="200" y="540" width="120" height="50" rx="8" fill="#fff"/>
+  <text x="260" y="565" font-size="13" font-weight="700" text-anchor="middle" fill="#333">Light Sensor</text>
+  <text x="260" y="582" font-size="11" text-anchor="middle" fill="#666">Analog · pin2</text>
+
+  <rect x="70" y="605" width="250" height="50" rx="8" fill="#fff"/>
+  <text x="195" y="630" font-size="13" font-weight="700" text-anchor="middle" fill="#333">LCD1602 (16×2)</text>
+  <text x="195" y="647" font-size="11" text-anchor="middle" fill="#666">I²C — local status display</text>
+
+  <!-- Actuators (right side) -->
+  <rect x="580" y="540" width="120" height="50" rx="8" fill="#fff"/>
+  <text x="640" y="565" font-size="13" font-weight="700" text-anchor="middle" fill="#333">Mini DC Fan</text>
+  <text x="640" y="582" font-size="11" text-anchor="middle" fill="#666">PWM · pin10</text>
+
+  <rect x="710" y="540" width="120" height="50" rx="8" fill="#fff"/>
+  <text x="770" y="565" font-size="13" font-weight="700" text-anchor="middle" fill="#333">4× NeoPixel</text>
+  <text x="770" y="582" font-size="11" text-anchor="middle" fill="#666">RGB · pin0</text>
+
+  <rect x="580" y="605" width="250" height="50" rx="8" fill="#fff"/>
+  <text x="705" y="630" font-size="13" font-weight="700" text-anchor="middle" fill="#333">Relay (planned)</text>
+  <text x="705" y="647" font-size="11" text-anchor="middle" fill="#666">High-voltage appliance switching</text>
+
+  <!-- Connection lines from YoloBit to sensors/actuators -->
+  <line x1="350" y1="580" x2="320" y2="565" stroke="#fff" stroke-width="2"/>
+  <line x1="350" y1="600" x2="320" y2="625" stroke="#fff" stroke-width="2"/>
+  <line x1="550" y1="580" x2="580" y2="565" stroke="#fff" stroke-width="2"/>
+  <line x1="550" y1="600" x2="580" y2="625" stroke="#fff" stroke-width="2"/>
+</svg>

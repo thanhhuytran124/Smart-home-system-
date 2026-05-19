@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <title>YOLO Home — Đăng nhập</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="auth-body">
+
+  <div class="auth-card">
+    <div class="auth-logo">
+      <img src="assets/logo.png" alt="Logo">
+      <h1>YOLO Home</h1>
+    </div>
+
+    <form id="loginForm" class="auth-form">
+      <h2>Đăng nhập</h2>
+      <div class="input-group">
+        <i class="fa-solid fa-user"></i>
+        <input type="text" id="login_user" placeholder="Tên đăng nhập" required autocomplete="username">
+      </div>
+      <div class="input-group">
+        <i class="fa-solid fa-lock"></i>
+        <input type="password" id="login_pass" placeholder="Mật khẩu" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn-save">
+        <i class="fa-solid fa-right-to-bracket"></i> ĐĂNG NHẬP
+      </button>
+      <p class="auth-switch">
+        Chưa có tài khoản? <a href="#" onclick="showRegister(); return false;">Đăng ký</a>
+      </p>
+    </form>
+
+    <form id="registerForm" class="auth-form" style="display:none;">
+      <h2>Đăng ký</h2>
+      <div class="input-group">
+        <i class="fa-solid fa-user"></i>
+        <input type="text" id="reg_user" placeholder="Tên đăng nhập (≥3 ký tự)" required minlength="3" autocomplete="username">
+      </div>
+      <div class="input-group">
+        <i class="fa-solid fa-lock"></i>
+        <input type="password" id="reg_pass" placeholder="Mật khẩu (≥6 ký tự)" required minlength="6" autocomplete="new-password">
+      </div>
+      <div class="input-group">
+        <i class="fa-solid fa-cloud"></i>
+        <input type="text" id="reg_aio_user" placeholder="Adafruit Username" required autocomplete="off">
+      </div>
+      <div class="input-group">
+        <i class="fa-solid fa-key"></i>
+        <input type="text" id="reg_aio_key" placeholder="Adafruit IO Key" required autocomplete="off">
+      </div>
+      <button type="submit" class="btn-save">
+        <i class="fa-solid fa-user-plus"></i> ĐĂNG KÝ
+      </button>
+      <p class="auth-switch">
+        Đã có tài khoản? <a href="#" onclick="showLogin(); return false;">Đăng nhập</a>
+      </p>
+    </form>
+
+    <div id="auth-message" class="auth-message"></div>
+  </div>
+
+  <script src="js/login.js?v=2"></script>
+</body>
+</html>

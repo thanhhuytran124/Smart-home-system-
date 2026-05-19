@@ -1,0 +1,76 @@
+# ── Python ─────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# ── Distribution / packaging ──────────────────────────────
+build/
+dist/
+*.egg-info/
+*.egg
+
+# ── Secrets & local config ────────────────────────────────
+.env
+.env.local
+*.local
+
+# ── Databases & generated data ────────────────────────────
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# Backend
+backend/yolohome.db
+backend/users.json
+backend/users.json.bak
+
+# ── Models & datasets (heavy binary files & personal photos) ──
+face\ detection/face_dataset/
+face-recognition/face_dataset/
+face-recognition/dataset/
+*.h5
+*.pkl
+*.joblib
+
+# ── Personal / sensitive data ─────────────────────────────
+WIN_*.jpg
+WIN_*.jpeg
+WIN_*.png
+
+# ── IDE / editor ──────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*~
+*.bak
+*.tmp
+
+# ── OS ─────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Logs ───────────────────────────────────────────────────
+*.log
+logs/
+
+# ── Pytest / coverage ─────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ── Claude worktrees (local working dirs, never commit) ───
+.claude/
+
+# ── Helper scripts (not part of the project) ──────────────
+_*.py
+_*.txt
