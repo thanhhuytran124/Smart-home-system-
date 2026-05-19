@@ -3,7 +3,6 @@
 Smart-home monitoring and control platform built on **YoloBit (ESP32)** + **Adafruit IO** + a **FastAPI/SQLite backend** with a **web dashboard**, plus an optional **OpenCV face-recognition** module.
 
 > 📄 Full technical report: [`docs/REPORT.md`](docs/REPORT.md)
-> 🎤 Presentation script: [`docs/SCRIPT.md`](docs/SCRIPT.md)
 
 ---
 
@@ -89,8 +88,6 @@ YoloHome/
 │       └── dashboard.js        Gauges, MQTT, fan/RGB/door controls
 │
 └── docs/
-    ├── REPORT.md               Full technical report
-    ├── SCRIPT.md               Presentation script
     └── images/                 Architecture & flow diagrams
         ├── architecture.png/svg
         ├── dataflow.png/svg
