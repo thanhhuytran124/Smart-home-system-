@@ -2,7 +2,6 @@
 
 Smart-home monitoring and control platform built on **YoloBit (ESP32)** + **Adafruit IO** + a **FastAPI/SQLite backend** with a **web dashboard**, plus an optional **OpenCV face-recognition** module.
 
-> 📄 Full technical report: [`docs/REPORT.md`](docs/REPORT.md)
 
 ---
 
